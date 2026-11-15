@@ -1,0 +1,19 @@
+# Este archivo le indica a git que debe de ignorar archivos y carpetas especificas del proyecto
+
+# Aqui estamos ignorando en el caso de exista el entorno virtual creado por el gestor de proyectos uv
+# El entorno virtual se encarga de cargar todas las dependencias del proyecto, ORM, FRAMEWORKS, etc. todo lo
+# que necesita el proyecto para funcionar
+# Le indicamos que lo ignore ya que cada aprticipante del proyecto tendra el suyo propio, es una carpeta muy
+#  pesada como para subirla al repo
+.venv/
+
+# indicamos que se ignores archivos con contraseñas o claves secretas locales
+.env
+
+# indicamos que se ignore la base de datos local de SQLite (para no subir datos de prueba)
+*.db
+dataBase.db
+
+# idnicamos que se ignoren archivos temporales y basura que crea Python automáticamente
+__pycache__/
+*.pyc
