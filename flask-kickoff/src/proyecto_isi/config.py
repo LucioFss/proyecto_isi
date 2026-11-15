@@ -1,4 +1,8 @@
 import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+DB_PATH = BASE_DIR / "dataBase.db"
 
 class Config:
     #Sello de seguridad proporcionado por el sistema operativo para la conexion con la base de datos
@@ -6,5 +10,5 @@ class Config:
     #Conexion con la base de datos SQLITE "dataBase"
     SQLALCHEMY_DATABASE_URI = os.getenv(
         "DATABASE_URL",
-        "sqlite:///dataBase.db",
+        f"sqlite:///{DB_PATH}",
     )
