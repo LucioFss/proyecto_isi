@@ -1,3 +1,5 @@
+from datetime import timezone
+from datetime import datetime, UTC
 from proyecto_isi.extensions import db
 
 class Question(db.Model):
@@ -10,3 +12,7 @@ class Question(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     title = db.Column(db.String, nullable = False)
     publication_date = db.Column(db.DateTime, nullable = False)
+
+    def __init__(self, title: str, publication_date: datetime | None = None):
+        self.title = title
+        self.publication_date = publication_date or datetime.now(UTC)

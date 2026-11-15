@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Preguntas</title>
+</head>
+<body>
+
+  <h2>Hacer una nueva pregunta</h2>
+  <form method="POST" action="/preguntas/crear">
+    <label for="title">Pregunta:</label>
+    <input type="text" id="title" name="title" required placeholder="Escribe tu pregunta aquí..." />
+    <button type="submit">Publicar pregunta</button>
+  </form>
+
+  <hr>
+
+  <h2>Preguntas existentes</h2>
+  {% if preguntas %}
+    <ul>
+      {% for p in preguntas %}
+        <li>
+          <strong>{{ p.title }}</strong> 
+          <small style="color: gray;">({{ p.publication_date.strftime('%d/%m/%Y %H:%M') }})</small>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No hay preguntas todavía. ¡Sé el primero en preguntar!</p>
+  {% endif %}
+
+</body>
+</html>

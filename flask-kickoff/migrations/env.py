@@ -1,20 +1,19 @@
-from logging.config import fileConfig
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
-from alembic import context
-
 import sys
 import os
+from logging.config import fileConfig
+from sqlalchemy import engine_from_config, pool
+from alembic import context
+
 #Le indicamos a Alemic donde esta nuestros scrips
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
+from proyecto_isi.config import Config
 from proyecto_isi.extensions import db
-from proyecto_isi.models import Question
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
 
 #Forzamos a Alembic a utilizar la direccion de nuestra base de datos
-config.set_main_option("sqlalchemy.url", "sqlite:///dataBase.db")
+config.set_main_option("sqlalchemy.url", Config.SQLALCHEMY_DATABASE_URI)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
