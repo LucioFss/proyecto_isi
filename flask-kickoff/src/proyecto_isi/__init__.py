@@ -13,12 +13,13 @@ def create_app(config_class=Config):
 
     db.init_app(app)
 
-
-    #from proyecto_isi.api.health import health_bp
+    #Se importa el blueprint de health check
+    from proyecto_isi.api.health import health_bp
     #from proyecto_isi.web.users import users_bp
 
-    #app.register_blueprint(health_bp)
+    app.register_blueprint(health_bp, url_prefix="/api")
     #app.register_blueprint(users_bp)
+
     @app.route("/")
     def inicio():
         return "servidor funcionando..."
@@ -44,5 +45,5 @@ def create_app(config_class=Config):
         # Con simplemente el GET, mostramos el formulario y las existentes.
         preguntas = Question.query.order_by(Question.publication_date.desc()).all()
         return render_template("crear_pregunta.html", preguntas=preguntas)
-    
+
     return app
