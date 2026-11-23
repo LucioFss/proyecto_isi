@@ -7,7 +7,7 @@
 <body>
 
   <h2>Hacer una nueva pregunta</h2>
-  <form method="POST" action="/preguntas/crear">
+  <form method="POST" action=" {{ url_for('questions.create_question')}}">
     <label for="title">Pregunta:</label>
     <input type="text" id="title" name="title" required placeholder="Escribe tu pregunta aquí..." />
     <button type="submit">Publicar pregunta</button>
@@ -20,7 +20,7 @@
     <ul>
       {% for p in preguntas %}
         <li>
-          <strong>{{ p.title }}</strong> 
+          <strong>{{ p.title }}</strong>
           <small style="color: gray;">({{ p.publication_date.strftime('%d/%m/%Y %H:%M') }})</small>
         </li>
       {% endfor %}
