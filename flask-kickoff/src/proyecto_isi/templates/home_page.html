@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Inicio</title>
+</head>
+<body>
+    <header>
+        {# verificamos que el usuario este iniciado sesion #}
+        {% if current_user.is_authenticated %}
+            <p>Sesion iniciada como <strong> {{ current_user.name }}</strong> | <a href="{{ url_for('users.logout') }}"> Cerrar sesion</a></p>
+        {% else %}
+            <p><a href="{{ url_for('users.login') }}">Iniciar sesión</a> | <a href="{{ url_for('users.register') }}">Registrarse</a></p>        {% endif %}
+    </header>
+
+    <hr>
+
+  {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+  <h1>Bienvenido al sistema de Preguntas y Respuestas</h1>
+  <p>Elige que es lo que queres hacer:</p>
+  <nav>
+      <p><a href="{{ url_for('questions.all_questions') }}">Ver todas las preguntas</a>.</p>
+      <p><a href="{{ url_for('questions.create_question') }}">Preguntar</a>.</p>
+  </nav>
+</body>
+</html>
