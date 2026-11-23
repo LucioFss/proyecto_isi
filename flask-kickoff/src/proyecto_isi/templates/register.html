@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Crear cuenta</title>
+</head>
+<body>
+
+  <h2>Crear cuenta</h2>
+  <!--
+    Esta seccion toma los mensajes temporales enviadosd desde python con flash, como errores o avisos
+    los lee con get_flashed_messages, con el if verificamos si hay algun mensaje, y con el for
+    imprimimos todos los mensajes
+  -->
+  {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+  <form method="POST" action="{{ url_for('users.register') }}">>
+    <label for="name">Usuario:</label>
+    <input type="text" id="name" name="name" maxlength="20" required placeholder="Nombre de usuario" />
+    <label for="password">Contrasela</label>
+    <input type="password" id="password" name="password" required placeholder="Contraseña" />
+
+    <button type="submit">Registrarse</button>
+  </form>
+
+  <hr>
+<!--
+Esta seccion lo que hace es
+- añadir un enlace con <p> es la parte que le indica a html que es un hipervinculo
+- <a href="..."> le da el texto acompañante al hipervinculo
+- {{ url_for('users.login') }} es una funcion flask que se ejecuta con jinja2 que busca
+  en el blueprint users, la ruta de login y la reemplaza con la ruta real
+-->
+  <p>¿Ya tenés cuenta? <a href="{{ url_for('users.login') }}">Iniciá sesión acá</a>.</p>
+</body>
+</html>
