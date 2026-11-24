@@ -1,4 +1,3 @@
-from datetime import timezone
 from datetime import datetime, UTC
 from proyecto_isi.extensions import db
 
@@ -10,7 +9,8 @@ class Question(db.Model):
 
     #Declaramos el atributo id como un entero y que sea la clave primaria de la tabla
     id = db.Column(db.Integer, primary_key = True)
-    author_id = db.Column(db.String(32))
+    author_id = db.Column(db.String(36), db.ForeignKey("User.id"), nullable = True)
+    author = db.relationship("User")
     title = db.Column(db.String, nullable = False)
     publication_date = db.Column(db.DateTime, nullable = False)
 

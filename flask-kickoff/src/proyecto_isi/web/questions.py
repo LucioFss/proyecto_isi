@@ -1,5 +1,6 @@
 from flask import Blueprint,request,render_template,redirect,url_for
-from datetime import datetime, timezone, UTC
+from datetime import datetime, UTC
+from flask_login import current_user
 from proyecto_isi.extensions import db
 from proyecto_isi.models.Question import Question
 
@@ -15,6 +16,9 @@ def create_question():
             title = new_title,
             publication_date=datetime.now(UTC)
         )
+        if current_user.is_authenticated:
+            new_question.author_id = current_user.get_id()
+
         try:
             db.session.add(new_question)
             db.session.commit()
