@@ -12,6 +12,8 @@ def create_app(config_class=Config):
 
     # Se inicializa la conexion con la base de datos
     db.init_app(app)
+    with app.app_context():
+        db.create_all()  # Crea las tablas de la base de datos si no existen
 
     # Se inicializa la conexion con el login manager
     login_manager.init_app(app)
