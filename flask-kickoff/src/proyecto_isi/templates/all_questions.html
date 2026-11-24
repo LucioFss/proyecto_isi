@@ -2,21 +2,357 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Preguntas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Foro - Preguntas existentes</title>
+  <!-- Fuente moderna desde Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-body: #f3f4f6;
+      --bg-card: #ffffff;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --border-color: #e5e7eb;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.5;
+      padding: 2rem 1rem;
+    }
+
+    .forum-container {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    /* Barra superior de navegación */
+    .top-nav {
+      margin-bottom: 1.25rem;
+    }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: var(--bg-card);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      box-shadow: var(--shadow-sm);
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+    }
+
+    .btn-back:hover {
+      background-color: #f9fafb;
+      border-color: #cbd5e1;
+      color: var(--primary);
+      transform: translateX(-2px);
+    }
+
+    .btn-back svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Encabezado del foro */
+    .forum-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--border-color);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .forum-title-group h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.025em;
+    }
+
+    .forum-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+    }
+
+    .badge-count {
+      background-color: #dbeafe;
+      color: var(--primary);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+    }
+
+    /* Lista de preguntas */
+    .question-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .question-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+
+    .question-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: #cbd5e1;
+    }
+
+    /* Ícono decorativo estilo hilo de foro */
+    .question-icon {
+      flex-shrink: 0;
+      width: 42px;
+      height: 42px;
+      background-color: #eff6ff;
+      color: var(--primary);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .question-content {
+      flex-grow: 1;
+      min-width: 0;
+    }
+
+    .question-title {
+      display: block;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 0.35rem;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .question-card:hover .question-title {
+      color: var(--primary);
+    }
+
+    .question-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.825rem;
+      color: var(--text-muted);
+    }
+
+    .question-meta svg {
+      width: 14px;
+      height: 14px;
+      opacity: 0.8;
+    }
+
+    .answers-section {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .answers-section h3 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .answer-list {
+      list-style: none;
+      display: grid;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .answer-list li,
+    .answer-prompt {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .answer-form {
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .answer-form textarea {
+      width: 100%;
+      min-height: 5rem;
+      padding: 0.65rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font: inherit;
+      resize: vertical;
+    }
+
+    .answer-form button {
+      justify-self: start;
+      padding: 0.55rem 0.9rem;
+      border: 0;
+      border-radius: 8px;
+      background: var(--primary);
+      color: white;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    /* Estado vacío */
+    .empty-state {
+      background-color: var(--bg-card);
+      border: 1px dashed #cbd5e1;
+      border-radius: 12px;
+      padding: 3.5rem 1.5rem;
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    .empty-state svg {
+      width: 48px;
+      height: 48px;
+      color: #9ca3af;
+      margin-bottom: 1rem;
+    }
+
+    .empty-state h3 {
+      color: var(--text-main);
+      font-size: 1.15rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .empty-state p {
+      font-size: 0.95rem;
+    }
+
+    /* Responsivo */
+    @media (max-width: 600px) {
+      .question-card {
+        padding: 1rem;
+        align-items: flex-start;
+      }
+      .question-icon {
+        width: 36px;
+        height: 36px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h2>Preguntas existentes</h2>
-  {% if preguntas %}
-    <ul>
-      {% for p in preguntas %}
-        <li>
-          <strong>{{ p.title }}</strong>
-          <small style="color: gray;">({{ p.publication_date.strftime('%d/%m/%Y %H:%M') }})</small>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No hay preguntas todavía. ¡Sé el primero en preguntar!</p>
-  {% endif %}
+
+  <main class="forum-container">
+    <!-- Botón para volver a la página principal -->
+    <nav class="top-nav">
+      <a href="/" class="btn-back">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Volver al inicio
+      </a>
+    </nav>
+
+    <header class="forum-header">
+      <div class="forum-title-group">
+        <h2>Preguntas existentes</h2>
+        <p class="forum-subtitle">Explora las consultas y debates recientes de la comunidad</p>
+      </div>
+      {% if preguntas %}
+        <span class="badge-count">{{ preguntas|length }} {{ 'pregunta' if preguntas|length == 1 else 'preguntas' }}</span>
+      {% endif %}
+    </header>
+
+    {% if preguntas %}
+      <ul class="question-list">
+        {% for p in preguntas %}
+          <li class="question-card" id="question-{{ p.id }}">
+            <!-- Ícono de burbuja de diálogo -->
+            <div class="question-icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+            </div>
+
+            <div class="question-content">
+              <span class="question-title">{{ p.title }}</span>
+              
+              <div class="question-meta">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <time>Publicado el {{ p.publication_date.strftime('%d/%m/%Y a las %H:%M') }}</time>
+                <span>Autor: {{ p.author.name if p.author else (p.author_id or 'Anónimo') }}</span>
+              </div>
+
+              <section class="answers-section" aria-label="Respuestas">
+                {% if p.answers %}
+                  <h3>Respuestas</h3>
+                  <ul class="answer-list">
+                    {% for answer in p.answers %}
+                      <li><strong>{{ answer.author.name }}</strong>: {{ answer.body }}</li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+
+                {% if current_user.is_authenticated %}
+                  <form class="answer-form" method="post" action="{{ url_for('answers.create_answer', question_id=p.id) }}">
+                    <label for="answer-{{ p.id }}">Tu respuesta</label>
+                    <textarea id="answer-{{ p.id }}" name="body" required></textarea>
+                    <button type="submit">Responder</button>
+                  </form>
+                {% else %}
+                  <p class="answer-prompt"><a href="{{ url_for('users.login') }}">Inicia sesión</a> para responder esta pregunta.</p>
+                {% endif %}
+              </section>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="empty-state">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+        <h3>No hay preguntas todavía</h3>
+        <p>¡Sé el primero en preguntar y abrir la conversación!</p>
+      </div>
+    {% endif %}
+  </main>
+
 </body>
 </html>

@@ -2,43 +2,316 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Crear cuenta</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Foro - Crear cuenta</title>
+  <!-- Fuente moderna desde Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-body: #f3f4f6;
+      --bg-card: #ffffff;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --border-color: #e5e7eb;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .auth-wrapper {
+      width: 100%;
+      max-width: 440px;
+    }
+
+    /* Botón volver al inicio */
+    .top-nav {
+      margin-bottom: 1.25rem;
+    }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: var(--bg-card);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 0.45rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      box-shadow: var(--shadow-sm);
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+    }
+
+    .btn-back:hover {
+      background-color: #f9fafb;
+      border-color: #cbd5e1;
+      color: var(--primary);
+      transform: translateX(-2px);
+    }
+
+    /* Tarjeta principal de Registro */
+    .auth-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 2.25rem 2rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 1.75rem;
+    }
+
+    .auth-icon {
+      width: 48px;
+      height: 48px;
+      background-color: #ecfdf5;
+      color: #059669;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .auth-header h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.025em;
+      margin-bottom: 0.3rem;
+    }
+
+    .auth-header p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* Mensajes Flash */
+    .flash-container {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .flash-message {
+      background-color: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .flash-message svg {
+      flex-shrink: 0;
+      color: #dc2626;
+    }
+
+    /* Formulario */
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-group label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.65rem 0.9rem;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      background-color: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .form-group input::placeholder {
+      color: #9ca3af;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .input-hint {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .btn-submit {
+      width: 100%;
+      margin-top: 0.35rem;
+      padding: 0.75rem 1rem;
+      background-color: var(--primary);
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.15s ease, transform 0.1s ease;
+    }
+
+    .btn-submit:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .btn-submit:active {
+      transform: scale(0.99);
+    }
+
+    /* Pie de tarjeta / Enlace a login */
+    .auth-footer {
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .auth-footer a {
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .auth-footer a:hover {
+      color: var(--primary-hover);
+      text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      .auth-card {
+        padding: 1.75rem 1.25rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
-  <h2>Crear cuenta</h2>
-  <!--
-    Esta seccion toma los mensajes temporales enviadosd desde python con flash, como errores o avisos
-    los lee con get_flashed_messages, con el if verificamos si hay algun mensaje, y con el for
-    imprimimos todos los mensajes
-  -->
-  {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul>
-          {% for message in messages %}
-            <li>{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
+  <div class="auth-wrapper">
+    <!-- Botón para volver a la página principal -->
+    <nav class="top-nav">
+      <a href="/" class="btn-back">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Volver al inicio
+      </a>
+    </nav>
 
-  <form method="POST" action="{{ url_for('users.register') }}">>
-    <label for="name">Usuario:</label>
-    <input type="text" id="name" name="name" maxlength="20" required placeholder="Nombre de usuario" />
-    <label for="password">Contrasela</label>
-    <input type="password" id="password" name="password" required placeholder="Contraseña" />
+    <main class="auth-card">
+      <div class="auth-header">
+        <div class="auth-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="8.5" cy="7" r="4"></circle>
+            <line x1="20" y1="8" x2="20" y2="14"></line>
+            <line x1="23" y1="11" x2="17" y2="11"></line>
+          </svg>
+        </div>
+        <h2>Crear cuenta</h2>
+        <p>Únete a la comunidad para preguntar y responder</p>
+      </div>
 
-    <button type="submit">Registrarse</button>
-  </form>
+      {# 
+        Esta sección toma los mensajes temporales enviados desde Python con flash, como errores o avisos.
+        Los lee con get_flashed_messages(), con el if verificamos si hay algún mensaje, y con el for
+        imprimimos todos los mensajes.
+      #}
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul class="flash-container">
+            {% for message in messages %}
+              <li class="flash-message">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <span>{{ message }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
 
-  <hr>
-<!--
-Esta seccion lo que hace es
-- añadir un enlace con <p> es la parte que le indica a html que es un hipervinculo
-- <a href="..."> le da el texto acompañante al hipervinculo
-- {{ url_for('users.login') }} es una funcion flask que se ejecuta con jinja2 que busca
-  en el blueprint users, la ruta de login y la reemplaza con la ruta real
--->
-  <p>¿Ya tenés cuenta? <a href="{{ url_for('users.login') }}">Iniciá sesión acá</a>.</p>
+      <form class="auth-form" method="POST" action="{{ url_for('users.register') }}">
+        <div class="form-group">
+          <label for="name">Usuario</label>
+          <input type="text" id="name" name="name" maxlength="20" required placeholder="Elige un nombre de usuario" autocomplete="username">
+          <span class="input-hint">Máximo 20 caracteres.</span>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" name="password" required placeholder="••••••••" autocomplete="new-password">
+        </div>
+
+        <button type="submit" class="btn-submit">Registrarse</button>
+      </form>
+
+      {# 
+        Enlace hacia el inicio de sesión usando url_for('users.login') para que Flask/Jinja2
+        resuelva dinámicamente la ruta real del blueprint 'users'.
+      #}
+      <div class="auth-footer">
+        <p>¿Ya tenés cuenta? <a href="{{ url_for('users.login') }}">Iniciá sesión acá</a>.</p>
+      </div>
+    </main>
+  </div>
+
 </body>
 </html>

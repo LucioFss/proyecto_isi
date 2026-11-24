@@ -2,34 +2,393 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Inicio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Foro - Inicio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-body: #f3f4f6;
+      --bg-card: #ffffff;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --border-color: #e5e7eb;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.5;
+      padding: 2rem 1rem;
+    }
+
+    .forum-container {
+      width: 100%;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    /* Barra superior de sesión */
+    .user-navbar {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 0.75rem 1.25rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text-main);
+      text-decoration: none;
+    }
+
+    .brand-logo svg {
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    .auth-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.875rem;
+      flex-wrap: wrap;
+    }
+
+    .user-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--text-muted);
+    }
+
+    .user-badge strong {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    .btn-sm {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.4rem 0.85rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-outline:hover {
+      background-color: #f9fafb;
+      border-color: #cbd5e1;
+      color: var(--primary);
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: #ffffff;
+      border: 1px solid var(--primary);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      border-color: var(--primary-hover);
+    }
+
+    .btn-logout {
+      color: #dc2626;
+      border: 1px solid #fecaca;
+      background-color: #fef2f2;
+    }
+
+    .btn-logout:hover {
+      background-color: #fee2e2;
+      border-color: #fca5a5;
+    }
+
+    /* Mensajes Flash */
+    .flash-container {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .flash-message {
+      background-color: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1e40af;
+      padding: 0.85rem 1.1rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .flash-message svg {
+      flex-shrink: 0;
+      color: var(--primary);
+    }
+
+    /* Sección Hero / Bienvenida */
+    .hero-section {
+      text-align: center;
+      padding: 1rem 1rem 2rem;
+    }
+
+    .hero-section h1 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.025em;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-section p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+    }
+
+    /* Tarjetas de navegación principal */
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      width: 100%;
+    }
+
+    .action-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.75rem;
+      text-decoration: none;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+
+    .action-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: #cbd5e1;
+    }
+
+    .action-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .icon-explore {
+      background-color: #eff6ff;
+      color: var(--primary);
+    }
+
+    .icon-ask {
+      background-color: #ecfdf5;
+      color: #059669;
+    }
+
+    .action-card-body {
+      width: 100%;
+    }
+
+    .action-card h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 0.35rem;
+      transition: color 0.15s ease;
+    }
+
+    .action-card:hover h2 {
+      color: var(--primary);
+    }
+
+    .action-card p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .action-link-hint {
+      margin-top: auto;
+      padding-top: 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .action-link-hint svg {
+      transition: transform 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .action-card:hover .action-link-hint svg {
+      transform: translateX(3px);
+    }
+
+    /* Responsivo para pantallas pequeñas */
+    @media (max-width: 640px) {
+      .action-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-section h1 {
+        font-size: 1.55rem;
+      }
+      .user-navbar {
+        justify-content: center;
+        text-align: center;
+      }
+    }
+  </style>
 </head>
 <body>
-    <header>
+
+  <div class="forum-container">
+    <!-- Barra superior de sesión -->
+    <header class="user-navbar">
+      <div class="brand-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+        </svg>
+        <span>Comunidad Q&amp;A</span>
+      </div>
+
+      <div class="auth-controls">
         {# verificamos que el usuario este iniciado sesion #}
         {% if current_user.is_authenticated %}
-            <p>Sesion iniciada como <strong> {{ current_user.name }}</strong> | <a href="{{ url_for('users.logout') }}"> Cerrar sesion</a></p>
+          <span class="user-badge">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            Sesión iniciada como <strong>{{ current_user.name }}</strong>
+          </span>
+          <a href="{{ url_for('users.logout') }}" class="btn-sm btn-logout">Cerrar sesión</a>
         {% else %}
-            <p><a href="{{ url_for('users.login') }}">Iniciar sesión</a> | <a href="{{ url_for('users.register') }}">Registrarse</a></p>        {% endif %}
+          <a href="{{ url_for('users.login') }}" class="btn-sm btn-outline">Iniciar sesión</a>
+          <a href="{{ url_for('users.register') }}" class="btn-sm btn-primary">Registrarse</a>
+        {% endif %}
+      </div>
     </header>
 
-    <hr>
-
-  {% with messages = get_flashed_messages() %}
+    <!-- Mensajes Flash de Flask -->
+    {% with messages = get_flashed_messages() %}
       {% if messages %}
-        <ul>
+        <ul class="flash-container">
           {% for message in messages %}
-            <li>{{ message }}</li>
+            <li class="flash-message">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
+              <span>{{ message }}</span>
+            </li>
           {% endfor %}
         </ul>
       {% endif %}
     {% endwith %}
 
-  <h1>Bienvenido al sistema de Preguntas y Respuestas</h1>
-  <p>Elige que es lo que queres hacer:</p>
-  <nav>
-      <p><a href="{{ url_for('questions.all_questions') }}">Ver todas las preguntas</a>.</p>
-      <p><a href="{{ url_for('questions.create_question') }}">Preguntar</a>.</p>
-  </nav>
+    <!-- Título de bienvenida -->
+    <main>
+      <section class="hero-section">
+        <h1>Bienvenido al sistema de Preguntas y Respuestas</h1>
+        <p>Elige qué es lo que quieres hacer hoy en la comunidad</p>
+      </section>
+
+      <!-- Tarjetas de navegación principal -->
+      <div class="action-grid">
+        <a href="{{ url_for('questions.all_questions') }}" class="action-card">
+          <div class="action-icon icon-explore">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </div>
+          <div class="action-card-body">
+            <h2>Ver todas las preguntas</h2>
+            <p>Explora los hilos existentes, lee respuestas y participa en las discusiones abiertas.</p>
+          </div>
+          <span class="action-link-hint">
+            Explorar foro
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </span>
+        </a>
+
+        <a href="{{ url_for('questions.create_question') }}" class="action-card">
+          <div class="action-icon icon-ask">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="16"></line>
+              <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+          </div>
+          <div class="action-card-body">
+            <h2>Preguntar</h2>
+            <p>¿Tienes una duda? Publica una nueva consulta para que otros miembros te ayuden.</p>
+          </div>
+          <span class="action-link-hint">
+            Crear pregunta
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </span>
+        </a>
+      </div>
+    </main>
+  </div>
+
 </body>
 </html>

@@ -3,6 +3,7 @@ from proyecto_isi.config import Config
 from proyecto_isi.extensions import db, login_manager
 from proyecto_isi.services.user_service import get_user_by_id
 from proyecto_isi.models.Question import Question
+from proyecto_isi.models.Answers import Answer
 
 #Clase que crea y configura una aplicacion web con flask
 def create_app(config_class=Config):
