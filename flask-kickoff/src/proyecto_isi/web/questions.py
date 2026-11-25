@@ -1,6 +1,6 @@
-from flask import Blueprint,request,render_template,redirect,url_for
+from flask import Blueprint,request,render_template,redirect,url_for, abort
 from datetime import datetime, UTC
-from flask_login import current_user
+from flask_login import current_user, login_required
 from proyecto_isi.extensions import db
 from proyecto_isi.models.Question import Question
 
@@ -36,3 +36,21 @@ def create_question():
 def all_questions():
     preguntas = Question.query.order_by(Question.publication_date.desc()).all()  # pyright: ignore[reportAttributeAccessIssue]
     return render_template("all_questions.html", preguntas=preguntas)
+
+@questions_bp.route("/question/<int:question_id>/vote", methods=["POST"])
+@login_required
+def vote_question(question_id: int):
+    question = db.session.get(Question, question_id)
+    if question is None:
+        abort(404)
+    try:
+        value = int(request.form.get("value", 0))
+        question.registrar_voto(user_id=current_user.get_id(), value=value)
+        db.session.commit()
+    except ValueError:
+        return "Valor de voto inválido", 400
+    except Exception as e:
+        db.session.rollback()
+        return f"Error al registrar el voto: {e}", 500
+
+    return redirect(url_for("questions.all_questions", _anchor=f"question-{question.id}"))

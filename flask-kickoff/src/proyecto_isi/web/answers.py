@@ -1,4 +1,4 @@
-from flask import Blueprint, abort, redirect, request, url_for
+from flask import Blueprint,request,render_template,redirect,url_for, abort
 from flask_login import current_user, login_required
 from proyecto_isi.extensions import db
 from proyecto_isi.models.Answers import Answer
@@ -27,3 +27,22 @@ def create_answer(question_id: int):
     db.session.commit()
 
     return redirect(url_for("questions.all_questions", _anchor=f"question-{question.id}"))
+
+@answers_bp.route("/answer/<int:answer_id>/vote", methods=["POST"])
+@login_required
+def vote_answer(answer_id: int):
+    answer = db.session.get(Answer, answer_id)
+    if answer is None:
+        abort(404)
+
+    try:
+        value = int(request.form.get("value", 0))
+        answer.registrar_voto(user_id=current_user.get_id(), value=value)
+        db.session.commit()
+    except ValueError:
+        return "Valor de voto inválido", 400
+    except Exception as e:
+        db.session.rollback()
+        return f"Error al registrar el voto: {e}", 500
+
+    return redirect(url_for("questions.all_questions", _anchor=f"question-{answer.question_id}"))
