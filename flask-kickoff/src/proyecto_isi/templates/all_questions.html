@@ -283,18 +283,6 @@
         Volver al inicio
       </a>
     </nav>
-    <!-- Votos de una pregunta -->
-<form action="{{ url_for('questions.vote_question', question_id=pregunta.id) }}" method="POST" style="display:inline;">
-    <button type="submit" name="value" value="1">👍 {{ pregunta.votos_positivos }}</button>
-    <button type="submit" name="value" value="-1">👎 {{ pregunta.votos_negativos }}</button>
-</form>
-
-<!-- Votos de una respuesta -->
-<form action="{{ url_for('answers.vote_answer', answer_id=respuesta.id_answer) }}" method="POST" style="display:inline;">
-    <button type="submit" name="value" value="1">👍 {{ respuesta.votos_positivos }}</button>
-    <button type="submit" name="value" value="-1">👎 {{ respuesta.votos_negativos }}</button>
-</form>
-
     <header class="forum-header">
       <div class="forum-title-group">
         <h2>Preguntas existentes</h2>
@@ -328,12 +316,23 @@
                 <span>Autor: {{ p.author.name if p.author else (p.author_id or 'Anónimo') }}</span>
               </div>
 
+              <form action="{{ url_for('questions.vote_question', question_id=p.id) }}" method="POST" style="display:inline;">
+                <button type="submit" name="value" value="1">👍 {{ p.votos_positivos }}</button>
+                <button type="submit" name="value" value="-1">👎 {{ p.votos_negativos }}</button>
+              </form>
+
               <section class="answers-section" aria-label="Respuestas">
                 {% if p.answers %}
                   <h3>Respuestas</h3>
                   <ul class="answer-list">
                     {% for answer in p.answers %}
-                      <li><strong>{{ answer.author.name }}</strong>: {{ answer.body }}</li>
+                      <li>
+                        <strong>{{ answer.author.name }}</strong>: {{ answer.body }}
+                        <form action="{{ url_for('answers.vote_answer', answer_id=answer.id_answer) }}" method="POST" style="display:inline;">
+                          <button type="submit" name="value" value="1">👍 {{ answer.votos_positivos }}</button>
+                          <button type="submit" name="value" value="-1">👎 {{ answer.votos_negativos }}</button>
+                        </form>
+                      </li>
                     {% endfor %}
                   </ul>
                 {% endif %}

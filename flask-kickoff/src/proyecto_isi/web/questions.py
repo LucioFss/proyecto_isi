@@ -1,10 +1,8 @@
-from flask import Blueprint,request,render_template,redirect,url_for
+from flask import Blueprint,request,render_template,redirect,url_for, abort
 from datetime import datetime, UTC
-from flask_login import current_user
+from flask_login import current_user, login_required
 from proyecto_isi.extensions import db
 from proyecto_isi.models.Question import Question
-from flask import Blueprint, request, render_template, redirect, url_for, abort
-from flask_login import current_user, login_required
 
 questions_bp = Blueprint("questions", __name__)
 
@@ -45,8 +43,6 @@ def vote_question(question_id: int):
     question = db.session.get(Question, question_id)
     if question is None:
         abort(404)
-
-    # Esperamos "1" o "-1" desde el formulario HTML
     try:
         value = int(request.form.get("value", 0))
         question.registrar_voto(user_id=current_user.get_id(), value=value)
