@@ -283,6 +283,17 @@
         Volver al inicio
       </a>
     </nav>
+    <!-- Votos de una pregunta -->
+<form action="{{ url_for('questions.vote_question', question_id=pregunta.id) }}" method="POST" style="display:inline;">
+    <button type="submit" name="value" value="1">👍 {{ pregunta.votos_positivos }}</button>
+    <button type="submit" name="value" value="-1">👎 {{ pregunta.votos_negativos }}</button>
+</form>
+
+<!-- Votos de una respuesta -->
+<form action="{{ url_for('answers.vote_answer', answer_id=respuesta.id_answer) }}" method="POST" style="display:inline;">
+    <button type="submit" name="value" value="1">👍 {{ respuesta.votos_positivos }}</button>
+    <button type="submit" name="value" value="-1">👎 {{ respuesta.votos_negativos }}</button>
+</form>
 
     <header class="forum-header">
       <div class="forum-title-group">
