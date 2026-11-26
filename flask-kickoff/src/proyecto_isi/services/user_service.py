@@ -1,6 +1,9 @@
-from werkzeug.security import check_password_hash,generate_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
+
 from proyecto_isi.extensions import db
 from proyecto_isi.models.User import User
+
+
 #ARCHIVO QUE IMPLEMENTA TODA LA LOGICA DE GESTION DE Usuario
 def register_user(name : str, password : str):
     #Se usa scalar_one_or_none() en vez de scalar_one, por que el primero se usa cuando no sabes si

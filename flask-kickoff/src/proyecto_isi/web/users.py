@@ -1,7 +1,8 @@
-from flask import Flask,Blueprint, render_template, request, redirect, url_for,flash
-from flask_login.utils import login_user, login_required, logout_user
-from proyecto_isi.services.user_service import register_user, authenticate_user
-from proyecto_isi.extensions import login_manager
+from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask_login.utils import login_required, login_user, logout_user
+
+from proyecto_isi.services.user_service import authenticate_user, register_user
+
 users_bp = Blueprint("users", __name__)
 
 #Metodo que se encarga de tratar el registro de un usuario en el sistema

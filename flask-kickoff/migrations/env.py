@@ -1,13 +1,15 @@
-import sys
 import os
+import sys
 from logging.config import fileConfig
-from sqlalchemy import engine_from_config, pool
+
 from alembic import context
+from sqlalchemy import engine_from_config, pool
 
 #Le indicamos a Alemic donde esta nuestros scrips
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
 from proyecto_isi.config import Config
 from proyecto_isi.extensions import db
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config

@@ -3,7 +3,6 @@
 # Se importa la clase de blueprint para la creacion y gestion de blueprints, y jsonfy, para convertir datos de python
 from flask import Blueprint, jsonify
 
-
 health_bp = Blueprint('health',__name__)
 
 @health_bp.route('/health')

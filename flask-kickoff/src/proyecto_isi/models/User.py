@@ -1,6 +1,10 @@
 import uuid
-from proyecto_isi.extensions import db
+
 from flask_login import UserMixin
+from sqlalchemy import false
+
+from proyecto_isi.extensions import db
+
 
 class User(UserMixin,db.Model):
     __tablename__ = "User"
@@ -11,3 +15,4 @@ class User(UserMixin,db.Model):
     #Se declara el campo de la contraseña de el usuario
     # Es un campo que guarda un hash muy muy largo de tipo String
     password_hash = db.Column(db.String(256))
+    is_admin = db.Column(db.Boolean, nullable=False, default=False, server_default=false())

@@ -1,5 +1,6 @@
-from flask import Blueprint,request,render_template,redirect,url_for, abort
+from flask import Blueprint, abort, redirect, request, url_for
 from flask_login import current_user, login_required
+
 from proyecto_isi.extensions import db
 from proyecto_isi.models.Answers import Answer
 from proyecto_isi.models.Question import Question
@@ -27,6 +28,21 @@ def create_answer(question_id: int):
     db.session.commit()
 
     return redirect(url_for("questions.all_questions", _anchor=f"question-{question.id}"))
+
+@answers_bp.route("/answer/<int:answer_id>/delete", methods=["POST"])
+@login_required
+def delete_answer(answer_id: int):
+    if not current_user.is_admin:
+        abort(403)
+
+    answer = db.session.get(Answer, answer_id)
+    if answer is None:
+        abort(404)
+
+    question_id = answer.question_id
+    db.session.delete(answer)
+    db.session.commit()
+    return redirect(url_for("questions.all_questions", _anchor=f"question-{question_id}"))
 
 @answers_bp.route("/answer/<int:answer_id>/vote", methods=["POST"])
 @login_required

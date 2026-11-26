@@ -1,5 +1,7 @@
-from datetime import datetime, UTC
+from datetime import UTC, datetime
+
 from proyecto_isi.extensions import db
+
 
 class AnswerVote(db.Model):
     __tablename__ = "answer_votes"
@@ -23,7 +25,7 @@ class Answer(db.Model):
     author_id = db.Column(db.String(36), db.ForeignKey("User.id"), nullable=False)
     question_id = db.Column(db.Integer, db.ForeignKey("questions.id"), nullable=False)
     author = db.relationship("User", backref="answers")
-    question = db.relationship("Question", backref="answers")
+    question = db.relationship("Question", back_populates="answers")
 
     votes = db.relationship("AnswerVote", backref="answer", lazy="dynamic", cascade="all, delete-orphan")
 

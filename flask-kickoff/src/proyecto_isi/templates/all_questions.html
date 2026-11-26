@@ -320,6 +320,11 @@
                 <button type="submit" name="value" value="1">👍 {{ p.votos_positivos }}</button>
                 <button type="submit" name="value" value="-1">👎 {{ p.votos_negativos }}</button>
               </form>
+              {% if current_user.is_authenticated and current_user.is_admin %}
+                <form action="{{ url_for('questions.delete_question', question_id=p.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Borrar esta pregunta y todas sus respuestas?');">
+                  <button type="submit">Borrar pregunta</button>
+                </form>
+              {% endif %}
 
               <section class="answers-section" aria-label="Respuestas">
                 {% if p.answers %}
@@ -332,6 +337,11 @@
                           <button type="submit" name="value" value="1">👍 {{ answer.votos_positivos }}</button>
                           <button type="submit" name="value" value="-1">👎 {{ answer.votos_negativos }}</button>
                         </form>
+                        {% if current_user.is_authenticated and current_user.is_admin %}
+                          <form action="{{ url_for('answers.delete_answer', answer_id=answer.id_answer) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Borrar esta respuesta?');">
+                            <button type="submit">Borrar respuesta</button>
+                          </form>
+                        {% endif %}
                       </li>
                     {% endfor %}
                   </ul>

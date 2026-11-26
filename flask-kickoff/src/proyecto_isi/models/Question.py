@@ -1,5 +1,7 @@
-from datetime import datetime, UTC
+from datetime import UTC, datetime
+
 from proyecto_isi.extensions import db
+
 
 class QuestionVote(db.Model):
     __tablename__ = "question_votes"
@@ -26,6 +28,7 @@ class Question(db.Model):
     
     # Relación con los votos (cascade borra los votos si se borra la pregunta)
     votes = db.relationship("QuestionVote", backref="question", lazy="dynamic", cascade="all, delete-orphan")
+    answers = db.relationship("Answer", back_populates="question", cascade="all, delete-orphan")
 
     def __init__(self, title: str, publication_date: datetime | None = None):
         self.title = title
